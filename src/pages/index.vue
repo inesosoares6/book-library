@@ -30,7 +30,7 @@
 			v-if="books.length"
 		>
 			<div
-				v-for="(book, index) in books"
+				v-for="(book, index) in booksFiltered"
 				:key="index"
 			>
 				<v-list-item
@@ -77,6 +77,15 @@ const store = useAppStore()
 const search = ref('')
 
 const books = computed(() => store.getBooks)
+
+const booksFiltered = computed(() =>
+	books.value?.filter(
+		book =>
+			book.title.toLowerCase().includes(search.value.toLowerCase()) ||
+			book.author.toLowerCase().includes(search.value.toLowerCase())
+	)
+)
+
 const libraries = computed(() => store.getLibraries)
 const orderList = computed(() => store.getOrderByList)
 const library = computed({
