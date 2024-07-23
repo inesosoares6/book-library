@@ -27,7 +27,7 @@
 
 		<v-list
 			lines="two"
-			v-if="books.length"
+			v-if="books?.length"
 		>
 			<div
 				v-for="(book, index) in booksFiltered"
