@@ -66,6 +66,18 @@
 			class="w-100"
 			type="list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line,"
 		/>
+
+		<div class="floating-button">
+			<v-btn
+				style="pointer-events: all"
+				icon
+				size="small"
+				color="primary"
+			>
+				<v-icon>mdi-plus</v-icon>
+				<AddBook />
+			</v-btn>
+		</div>
 	</v-container>
 </template>
 
@@ -105,3 +117,14 @@ const orderBy = computed({
 	}
 })
 </script>
+
+<style scoped lang="css">
+.floating-button {
+	position: fixed;
+	bottom: 25px;
+	left: 50%;
+	z-index: 10;
+	pointer-events: none;
+	transform: translate(-25%, 0%);
+}
+</style>

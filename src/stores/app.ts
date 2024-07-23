@@ -52,6 +52,7 @@ export const useAppStore = defineStore('app', {
 					return booksTmp.sort((a, b) => a.author.localeCompare(b.author))
 			}
 		},
+    getNextBookId: state => state.books.length,
 		getOrderByList: state => state.orderByList,
 		getLibraries: state => state.libraries,
 		getCurrentOrderKey: state => state.currentOrderKey,
@@ -60,6 +61,9 @@ export const useAppStore = defineStore('app', {
 	actions: {
 		setBooks(books: Book[]) {
 			this.books = books
+		},
+		addBook(book: Book) {
+			this.books.push(book)
 		},
 		addLibrary(library: string) {
 			this.libraries.push(library)
