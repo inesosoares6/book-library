@@ -16,16 +16,19 @@
 			</v-toolbar>
 			<div
 				v-if="state === 0"
-				class="h-100 d-flex flex-column ga-10 justify-center align-center"
+				class="h-100 w-100 px-10 d-flex flex-column ga-10 justify-center"
 			>
 				<v-btn
 					color="primary"
+					size="x-large"
 					@click="state = 1"
 				>
 					Read barcode
 				</v-btn>
+				<BaseSeparator text="OR" />
 				<v-btn
 					variant="outlined"
+					size="x-large"
 					color="primary"
 					@click="state = 2"
 				>
@@ -36,7 +39,10 @@
 				v-if="state === 1"
 				class="d-flex flex-column align-center justify-center h-100 w-100"
 			>
-				<span class="text-h4">ISBN: {{ resultValue }}</span>
+				<v-progress-circular
+					color="primary"
+					indeterminate
+				/>
 				<v-btn
 					v-if="showStopScanButton"
 					class="stop-scan-btn position-absolute bottom-0 mb-10"
@@ -50,6 +56,40 @@
 				v-if="state === 2"
 				class="pa-10 d-flex flex-column ga-5"
 			>
+				<v-alert
+					v-if="showWarningAlert"
+					text="It was not possible to retrieve the book data through the ISBN code. Please fill it manually."
+					title="Warning"
+					type="warning"
+					variant="outlined"
+					min-height="120"
+				/>
+				<div
+					class="d-flex flex-column ga-8"
+					v-if="!showWarningAlert"
+				>
+					<div class="w-100 d-flex ga-8 mb-3 align-center">
+						<v-text-field
+							v-model="isbnCode"
+							label="ISBN"
+							variant="outlined"
+							:autofocus="!isbnCode"
+							required
+							hide-details
+						/>
+						<v-btn
+							:disabled="isbnCode?.length !== 13"
+							variant="outlined"
+							color="primary"
+							icon="mdi-arrow-right-bold"
+							@click="fetchBookDetails"
+						/>
+					</div>
+					<BaseSeparator
+						text="OR"
+						class="mb-5"
+					/>
+				</div>
 				<v-text-field
 					v-model="book.title"
 					label="Title"
@@ -112,6 +152,7 @@ const store = useAppStore()
 const libraries = computed(() => store.getLibraries)
 const addBookDialog = ref(false)
 const showStopScanButton = ref(false)
+const showWarningAlert = ref(false)
 const state = ref(0)
 
 const bookInitialState = {
@@ -123,18 +164,19 @@ const bookInitialState = {
 }
 const book = ref({ ...bookInitialState })
 
+const isbnCode = ref()
+
 const closeModal = () => {
 	state.value = 0
 	addBookDialog.value = false
 	book.value = { ...bookInitialState }
+	showWarningAlert.value = false
 }
 
 const addBook = () => {
 	store.addBook({ ...book.value, id: store.getNextBookId })
 	closeModal()
 }
-
-const resultValue = ref()
 
 const scanSingleBarcode = async () => {
 	return new Promise<string>(async resolve => {
@@ -162,19 +204,25 @@ const stopScan = async () => {
 	await BarcodeScanner.removeAllListeners()
 	await BarcodeScanner.stopScan()
 	state.value = 2
+	showWarningAlert.value = true
+	book.value = { ...bookInitialState }
+}
+
+const fetchBookDetails = async () => {
+	const result = await getBookDetails(isbnCode.value)
+	if (result) {
+		book.value = { ...result }
+	} else {
+		showWarningAlert.value = true
+		book.value = { ...bookInitialState }
+	}
 }
 
 watch(state, async () => {
 	if (state.value === 1) {
 		showStopScanButton.value = true
-		resultValue.value = await scanSingleBarcode()
-		const result = await getBookDetails(resultValue.value)
-		if (result) {
-			book.value = { ...result }
-		} else {
-			//show warning to fill it manually
-		}
-		showStopScanButton.value = false
+		isbnCode.value = await scanSingleBarcode()
+		await fetchBookDetails()
 		state.value = 2
 	}
 })

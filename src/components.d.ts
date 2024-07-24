@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddBook: typeof import('./components/AddBook.vue')['default']
+    BaseSeparator: typeof import('./components/BaseSeparator.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TopToolbar: typeof import('./components/TopToolbar.vue')['default']
