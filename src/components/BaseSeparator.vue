@@ -5,7 +5,6 @@
 			style="height: 1px; background-color: #dce0e3"
 		/>
 
-		<!-- Text -->
 		<span
 			class="shrink px-xs d-flex align-center font-weight-bold"
 			:style="{ color: '#6D758A', fontSize: '16px', lineHeight: '14px' }"
