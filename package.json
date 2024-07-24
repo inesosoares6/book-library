@@ -8,10 +8,12 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@capacitor-mlkit/barcode-scanning": "^6.1.0",
     "@capacitor/android": "^6.1.1",
     "@capacitor/cli": "^6.1.1",
     "@capacitor/core": "^6.1.1",
     "@mdi/font": "7.4.47",
+    "axios": "^1.7.2",
     "core-js": "^3.37.1",
     "roboto-fontface": "*",
     "vue": "^3.4.31",

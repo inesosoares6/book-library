@@ -11,6 +11,6 @@ export type StoreState = {
 	books: Book[]
 	orderByList: string[]
 	libraries: string[]
-  currentOrderKey: string
-  currentLibrary: string
+	currentOrderKey: string
+	currentLibrary: string
 }
