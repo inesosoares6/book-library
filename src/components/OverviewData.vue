@@ -9,7 +9,7 @@
 					v-for="(item, key) in overviewData"
 					:key="key"
 					:title="key.toUpperCase()"
-					class="mb-2"
+					:class="{ 'mb-2': isLastItem(key) }"
 				>
 					<template v-slot:append>
 						<div
@@ -42,4 +42,9 @@ const store = useAppStore()
 const overviewDataDialog = ref(false)
 
 const overviewData = computed(() => store.getOverviewData)
+
+const isLastItem = (key: string) => {
+	const keys = Object.keys(overviewData.value)
+	return key !== keys[keys.length - 1]
+}
 </script>
