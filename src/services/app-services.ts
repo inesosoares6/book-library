@@ -22,8 +22,7 @@ export const getFromOpenLibrary = async (isbnCode: string) => {
 			return {
 				title: bookData.details.title,
 				author: bookData.details?.authors ? bookData.details?.authors[0] : '',
-				date: bookData.details.publish_date,
-				cover: bookData.thumbnail_url
+				date: bookData.details.publish_date
 			}
 		} else {
 			return null
@@ -44,8 +43,7 @@ const getFromGoogleApi = async (isbnCode: string) => {
 			return {
 				title: bookData.title,
 				author: bookData?.authors ? bookData?.authors[0] : '',
-				date: bookData.publishedDate.split('-')[0],
-				cover: bookData.imageLinks?.smallThumbnail
+				date: bookData.publishedDate.split('-')[0]
 			}
 		} else {
 			return null
