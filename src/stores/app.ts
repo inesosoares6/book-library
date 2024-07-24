@@ -33,6 +33,7 @@ export const useAppStore = defineStore('app', {
 		defaultLibrary: 'orange'
 	}),
 	getters: {
+		getBooksLoaded: state => state.books?.length,
 		getBooks: state => {
 			let booksTmp = state.books
 			if (state.currentLibrary !== 'All') {
@@ -49,7 +50,8 @@ export const useAppStore = defineStore('app', {
 		},
 		getNextBookId: state => state.books.length,
 		getOrderByList: state => state.orderByList,
-		getLibraries: state => state.libraries,
+		getAllLibraries: state => state.libraries,
+		getLibraries: state => state.libraries.filter(library => library !== 'All'),
 		getCurrentOrderKey: state => state.currentOrderKey,
 		getCurrentLibrary: state => state.currentLibrary,
 		getDefaultLibrary: state => state.defaultLibrary

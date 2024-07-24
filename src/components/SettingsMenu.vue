@@ -28,6 +28,7 @@
 					<v-list-item title="Manage libraries">
 						<template v-slot:append>
 							<v-icon>mdi-chevron-right</v-icon>
+							<ManageLibraries />
 						</template>
 					</v-list-item>
 					<v-divider class="my-2" />
@@ -62,9 +63,7 @@ import { useAppStore } from '@/stores/app'
 
 const store = useAppStore()
 
-const libraries = computed(() =>
-	store.getLibraries.filter(library => library !== 'All')
-)
+const libraries = computed(() => store.getLibraries)
 const settingsMenu = ref(false)
 
 const defaultLibrary = computed({

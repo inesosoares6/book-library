@@ -27,35 +27,43 @@
 
 		<v-list
 			lines="two"
-			v-if="books?.length"
+			v-if="booksLoaded"
 		>
-			<div
-				v-for="(book, index) in booksFiltered"
-				:key="index"
-			>
-				<v-list-item
-					:title="book.title"
-					:subtitle="book.author"
+			<div v-if="booksFiltered.length">
+				<div
+					v-for="(book, index) in booksFiltered"
+					:key="index"
 				>
-					<template v-slot:prepend>
-						<v-avatar :color="colorMapper(getAvatarLetter(book))">
-							{{ getAvatarLetter(book) }}
-						</v-avatar>
-					</template>
-					<template v-slot:append>
-						<div class="d-flex flex-column ga-2">
-							<v-icon :color="book.read ? 'green' : 'grey'">
-								mdi-check-bold
-							</v-icon>
-							<v-icon :color="book.library">mdi-book-variant</v-icon>
-						</div>
-					</template>
-				</v-list-item>
-				<v-divider
-					inset
-					v-if="index < books.length - 1"
-					class="my-2"
-				/>
+					<v-list-item
+						:title="book.title"
+						:subtitle="book.author"
+					>
+						<template v-slot:prepend>
+							<v-avatar :color="colorMapper(getAvatarLetter(book))">
+								{{ getAvatarLetter(book) }}
+							</v-avatar>
+						</template>
+						<template v-slot:append>
+							<div class="d-flex flex-column ga-2">
+								<v-icon :color="book.read ? 'green' : 'grey'">
+									mdi-check-bold
+								</v-icon>
+								<v-icon :color="book.library">mdi-book-variant</v-icon>
+							</div>
+						</template>
+					</v-list-item>
+					<v-divider
+						inset
+						v-if="index < booksFiltered.length - 1"
+						class="my-2"
+					/>
+				</div>
+			</div>
+			<div
+				v-else
+				class="text-center pa-4"
+			>
+				No Books found with those filters.
 			</div>
 		</v-list>
 		<v-skeleton-loader
@@ -88,16 +96,19 @@ const store = useAppStore()
 const search = ref('')
 
 const books = computed(() => store.getBooks)
+const booksLoaded = computed(() => store.getBooksLoaded)
 
-const booksFiltered = computed(() =>
-	books.value?.filter(
-		book =>
-			book.title.toLowerCase().includes(search.value.toLowerCase()) ||
-			book.author.toLowerCase().includes(search.value.toLowerCase())
-	)
-)
+const booksFiltered = computed(() => {
+	return books.value?.length
+		? books.value?.filter(
+				book =>
+					book.title.toLowerCase().includes(search.value.toLowerCase()) ||
+					book.author.toLowerCase().includes(search.value.toLowerCase())
+		  )
+		: []
+})
 
-const libraries = computed(() => store.getLibraries)
+const libraries = computed(() => store.getAllLibraries)
 const orderList = computed(() => store.getOrderByList)
 const library = computed({
 	get() {
