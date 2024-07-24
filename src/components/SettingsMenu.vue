@@ -31,9 +31,15 @@
 						</template>
 					</v-list-item>
 					<v-divider class="my-2" />
-					<v-list-item title="Choose default library">
+					<v-list-item title="Default library">
 						<template v-slot:append>
-							<v-icon>mdi-chevron-right</v-icon>
+							<v-select
+								v-model="defaultLibrary"
+								:items="libraries"
+								variant="outlined"
+								hide-details
+								required
+							/>
 						</template>
 					</v-list-item>
 					<v-divider class="my-2" />
@@ -52,5 +58,21 @@
 </template>
 
 <script setup lang="ts">
+import { useAppStore } from '@/stores/app'
+
+const store = useAppStore()
+
+const libraries = computed(() =>
+	store.getLibraries.filter(library => library !== 'All')
+)
 const settingsMenu = ref(false)
+
+const defaultLibrary = computed({
+	get() {
+		return store.getDefaultLibrary
+	},
+	set(value) {
+		store.setDefaultLibrary(value)
+	}
+})
 </script>

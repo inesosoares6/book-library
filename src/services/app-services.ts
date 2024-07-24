@@ -6,7 +6,7 @@ export const getBookDetails = async (isbnCode: string) => {
 	for (const api of librariesApi) {
 		const response = await api()(isbnCode)
 		if (response) {
-			return { ...response, library: '', read: false }
+			return response
 		}
 	}
 	return null

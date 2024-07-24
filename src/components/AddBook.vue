@@ -70,7 +70,6 @@
 							v-model="isbnCode"
 							label="ISBN"
 							variant="outlined"
-							:autofocus="!isbnCode"
 							required
 							hide-details
 						/>
@@ -139,6 +138,7 @@ import { getBookDetails } from '@/services/app-services'
 const store = useAppStore()
 
 const libraries = computed(() => store.getLibraries)
+const defaultLibrary = computed(() => store.getDefaultLibrary)
 const addBookDialog = ref(false)
 const showStopScanButton = ref(false)
 const showWarningAlert = ref(false)
@@ -148,7 +148,7 @@ const bookInitialState = {
 	title: '',
 	author: '',
 	read: false,
-	library: ''
+	library: defaultLibrary.value
 }
 const book = ref({ ...bookInitialState })
 
@@ -201,7 +201,7 @@ const fetchBookDetails = async () => {
 	showWarningAlert.value = false
 	const result = await getBookDetails(isbnCode.value)
 	if (result) {
-		book.value = { ...result }
+		book.value = { ...book.value, ...result }
 	} else {
 		showWarningAlert.value = true
 		book.value = { ...bookInitialState }
@@ -215,6 +215,10 @@ watch(state, async () => {
 		await fetchBookDetails()
 		state.value = 2
 	}
+})
+
+watch(defaultLibrary, () => {
+	book.value.library = defaultLibrary.value
 })
 </script>
 

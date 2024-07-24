@@ -12,4 +12,5 @@ export type StoreState = {
 	libraries: string[]
 	currentOrderKey: string
 	currentLibrary: string
+	defaultLibrary: string
 }
