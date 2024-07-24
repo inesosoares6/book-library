@@ -11,6 +11,7 @@ declare module 'vue' {
     BaseSeparator: typeof import('./components/BaseSeparator.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SettingsMenu: typeof import('./components/SettingsMenu.vue')['default']
     TopToolbar: typeof import('./components/TopToolbar.vue')['default']
   }
 }
