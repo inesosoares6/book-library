@@ -38,11 +38,8 @@
 					:subtitle="book.author"
 				>
 					<template v-slot:prepend>
-						<v-avatar>
-							<v-img
-								:src="book.cover"
-								cover
-							/>
+						<v-avatar :color="colorMapper(getAvatarLetter(book))">
+							{{ getAvatarLetter(book) }}
 						</v-avatar>
 					</template>
 					<template v-slot:append>
@@ -83,6 +80,8 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/stores/app'
+import { colorMapper } from '@/helpers/mappers'
+import { Book } from '@/types/AppTypes'
 
 const store = useAppStore()
 
@@ -116,6 +115,10 @@ const orderBy = computed({
 		store.setCurrentOrderKey(value)
 	}
 })
+
+const getAvatarLetter = (book: Book) => {
+	return orderBy.value === 'Title' ? book.title[0] : book.author[0]
+}
 </script>
 
 <style scoped lang="css">

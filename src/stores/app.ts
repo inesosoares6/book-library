@@ -8,8 +8,6 @@ export const useAppStore = defineStore('app', {
 				id: 1,
 				title: 'Terra americana',
 				author: 'Jeanine Cummins',
-				cover:
-					'http://books.google.com/books/content?id=p8s2zgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api',
 				read: false,
 				library: 'orange'
 			},
@@ -17,8 +15,6 @@ export const useAppStore = defineStore('app', {
 				id: 2,
 				title: 'The Nightingale',
 				author: 'Kristin Hannah',
-				cover:
-					'http://books.google.com/books/content?id=B6eQBQAAQBAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api',
 				read: true,
 				library: 'blue'
 			},
@@ -26,8 +22,6 @@ export const useAppStore = defineStore('app', {
 				id: 3,
 				title: 'Americanah',
 				author: 'Chimamanda Ngozi Adichie',
-				cover:
-					'http://books.google.com/books/content?id=oOeMEAAAQBAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api',
 				read: true,
 				library: 'blue'
 			}

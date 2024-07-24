@@ -103,14 +103,6 @@
 					required
 					hide-details
 				/>
-				<v-text-field
-					v-model="book.cover"
-					label="Cover"
-					variant="outlined"
-					:autofocus="!book.cover && !!book.title && !!book.author"
-					required
-					hide-details
-				/>
 				<div class="d-flex ga-3">
 					<v-select
 						v-model="book.library"
@@ -155,7 +147,6 @@ const state = ref(0)
 const bookInitialState = {
 	title: '',
 	author: '',
-	cover: '',
 	read: false,
 	library: ''
 }
