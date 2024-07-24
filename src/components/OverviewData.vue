@@ -3,7 +3,7 @@
 		v-model="overviewDataDialog"
 		activator="parent"
 	>
-		<v-card class="d-flex flex-column pa-10">
+		<v-card class="d-flex flex-column pa-6">
 			<v-list>
 				<v-list-item
 					v-for="(item, key) in overviewData"

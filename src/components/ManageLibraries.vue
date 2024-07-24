@@ -3,7 +3,7 @@
 		v-model="manageLibrariesDialog"
 		activator="parent"
 	>
-		<v-card class="d-flex flex-column pa-10">
+		<v-card class="d-flex flex-column pa-6">
 			<div class="w-100 d-flex ga-8 mb-3 align-center">
 				<v-text-field
 					v-model="newLibrary"

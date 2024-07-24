@@ -95,6 +95,9 @@ export const useAppStore = defineStore('app', {
 		},
 		setDefaultLibrary(defaultLibrary: string) {
 			this.defaultLibrary = defaultLibrary
+		},
+		deleteBook(id: number) {
+			this.books = this.books.filter(book => book.id !== id)
 		}
 	}
 })

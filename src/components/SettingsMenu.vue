@@ -51,6 +51,7 @@
 					>
 						<template v-slot:append>
 							<v-icon>mdi-chevron-right</v-icon>
+							<DeleteBooks />
 						</template>
 					</v-list-item>
 				</v-list>

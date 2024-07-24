@@ -16,58 +16,10 @@
 				:items="orderList"
 			/>
 		</div>
-		<v-text-field
-			v-model="search"
-			label="Pesquisa"
-			prepend-inner-icon="mdi-magnify"
-			variant="outlined"
-			hide-details
-			single-line
-		/>
-
-		<v-list
-			lines="two"
+		<BooksList
 			v-if="booksLoaded"
-		>
-			<div v-if="booksFiltered.length">
-				<div
-					v-for="(book, index) in booksFiltered"
-					:key="index"
-				>
-					<v-list-item
-						:title="book.title"
-						:subtitle="book.author"
-					>
-						<template v-slot:prepend>
-							<v-avatar :color="colorMapper(getAvatarLetter(book))">
-								{{ getAvatarLetter(book) }}
-							</v-avatar>
-						</template>
-						<template v-slot:append>
-							<div class="d-flex flex-column ga-2">
-								<v-icon :color="book.read ? 'green' : 'grey'">
-									mdi-check-bold
-								</v-icon>
-								<v-icon :color="book.library.toLowerCase()">
-									mdi-book-variant
-								</v-icon>
-							</div>
-						</template>
-					</v-list-item>
-					<v-divider
-						inset
-						v-if="index < booksFiltered.length - 1"
-						class="my-2"
-					/>
-				</div>
-			</div>
-			<div
-				v-else
-				class="text-center pa-4"
-			>
-				No Books found with those filters.
-			</div>
-		</v-list>
+			purpose="display"
+		/>
 		<v-skeleton-loader
 			v-else
 			class="w-100"
@@ -90,25 +42,10 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/stores/app'
-import { colorMapper } from '@/helpers/mappers'
-import { Book } from '@/types/AppTypes'
 
 const store = useAppStore()
 
-const search = ref('')
-
-const books = computed(() => store.getBooks)
 const booksLoaded = computed(() => store.getBooksLoaded)
-
-const booksFiltered = computed(() => {
-	return books.value?.length
-		? books.value?.filter(
-				book =>
-					book.title.toLowerCase().includes(search.value.toLowerCase()) ||
-					book.author.toLowerCase().includes(search.value.toLowerCase())
-		  )
-		: []
-})
 
 const libraries = computed(() => store.getAllLibraries)
 const orderList = computed(() => store.getOrderByList)
@@ -128,10 +65,6 @@ const orderBy = computed({
 		store.setCurrentOrderKey(value)
 	}
 })
-
-const getAvatarLetter = (book: Book) => {
-	return orderBy.value === 'Title' ? book.title[0] : book.author[0]
-}
 </script>
 
 <style scoped lang="css">
