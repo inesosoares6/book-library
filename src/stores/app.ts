@@ -54,7 +54,31 @@ export const useAppStore = defineStore('app', {
 		getLibraries: state => state.libraries.filter(library => library !== 'All'),
 		getCurrentOrderKey: state => state.currentOrderKey,
 		getCurrentLibrary: state => state.currentLibrary,
-		getDefaultLibrary: state => state.defaultLibrary
+		getDefaultLibrary: state => state.defaultLibrary,
+		getOverviewData(state) {
+			let overviewData: Record<
+				string,
+				{ Books: number; Read: number; Unread: number }
+			> = {
+				All: {
+					Books: state.books.length,
+					Read: state.books.filter(book => book.read).length,
+					Unread: state.books.filter(book => !book.read).length
+				}
+			}
+			this.getLibraries.forEach(library => {
+				overviewData[library] = {
+					Books: state.books.filter(book => book.library === library).length,
+					Read: state.books.filter(
+						book => book.library === library && book.read
+					).length,
+					Unread: state.books.filter(
+						book => book.library === library && !book.read
+					).length
+				}
+			})
+			return overviewData
+		}
 	},
 	actions: {
 		setBooks(books: Book[]) {

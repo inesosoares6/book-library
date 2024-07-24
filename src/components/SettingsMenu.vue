@@ -19,9 +19,10 @@
 					<v-list-subheader>
 						{{ 'General'.toLocaleUpperCase() }}
 					</v-list-subheader>
-					<v-list-item title="Check overview data">
+					<v-list-item title="Overview data">
 						<template v-slot:append>
 							<v-icon>mdi-chevron-right</v-icon>
+							<OverviewData />
 						</template>
 					</v-list-item>
 					<v-divider class="my-2" />
