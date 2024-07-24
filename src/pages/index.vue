@@ -30,7 +30,7 @@
 			<v-btn
 				style="pointer-events: all"
 				icon
-				size="small"
+				size="large"
 				color="primary"
 			>
 				<v-icon>mdi-plus</v-icon>
