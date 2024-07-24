@@ -8,7 +8,8 @@
 				<v-list-item
 					v-for="(item, key) in overviewData"
 					:key="key"
-					:title="key"
+					:title="key.toUpperCase()"
+					class="mb-2"
 				>
 					<template v-slot:append>
 						<div
@@ -16,10 +17,14 @@
 							:key="index"
 							class="d-flex flex-column ml-4 text-center align-center ga-1"
 						>
-							<v-avatar :color="colorMapper(detail[0].toUpperCase())">
+							<v-avatar
+								:color="colorMapper(detail[0].toUpperCase())"
+								class="font-weight-bold"
+							>
+								<!-- @vue-ignore -->
 								{{ item[detail] }}
 							</v-avatar>
-							<span>{{ detail }}</span>
+							<span class="text-grey">{{ detail }}</span>
 						</div>
 					</template>
 				</v-list-item>

@@ -1,4 +1,4 @@
-import { Book, StoreState } from '@/types/AppTypes'
+import { Book, OverviewData, StoreState } from '@/types/AppTypes'
 import { defineStore } from 'pinia'
 
 export const useAppStore = defineStore('app', {
@@ -56,10 +56,7 @@ export const useAppStore = defineStore('app', {
 		getCurrentLibrary: state => state.currentLibrary,
 		getDefaultLibrary: state => state.defaultLibrary,
 		getOverviewData(state) {
-			let overviewData: Record<
-				string,
-				{ Books: number; Read: number; Unread: number }
-			> = {
+			let overviewData: Record<string, OverviewData> = {
 				All: {
 					Books: state.books.length,
 					Read: state.books.filter(book => book.read).length,

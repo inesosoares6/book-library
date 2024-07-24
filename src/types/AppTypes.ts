@@ -14,3 +14,9 @@ export type StoreState = {
 	currentLibrary: string
 	defaultLibrary: string
 }
+
+export type OverviewData = {
+  Books: number
+  Read: number
+  Unread: number
+}

@@ -48,7 +48,9 @@
 								<v-icon :color="book.read ? 'green' : 'grey'">
 									mdi-check-bold
 								</v-icon>
-								<v-icon :color="book.library">mdi-book-variant</v-icon>
+								<v-icon :color="book.library.toLowerCase()">
+									mdi-book-variant
+								</v-icon>
 							</div>
 						</template>
 					</v-list-item>

@@ -27,7 +27,7 @@
 					:title="library.toUpperCase()"
 				>
 					<template v-slot:append>
-						<v-icon :color="library">mdi-book</v-icon>
+						<v-icon :color="library.toLowerCase()">mdi-book</v-icon>
 					</template>
 				</v-list-item>
 			</v-list>
