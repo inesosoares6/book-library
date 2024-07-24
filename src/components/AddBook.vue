@@ -64,10 +64,7 @@
 					variant="outlined"
 					min-height="120"
 				/>
-				<div
-					class="d-flex flex-column ga-8"
-					v-if="!showWarningAlert"
-				>
+				<div class="d-flex flex-column ga-8">
 					<div class="w-100 d-flex ga-8 mb-3 align-center">
 						<v-text-field
 							v-model="isbnCode"
@@ -171,6 +168,7 @@ const closeModal = () => {
 	addBookDialog.value = false
 	book.value = { ...bookInitialState }
 	showWarningAlert.value = false
+	isbnCode.value = null
 }
 
 const addBook = () => {
@@ -209,6 +207,7 @@ const stopScan = async () => {
 }
 
 const fetchBookDetails = async () => {
+	showWarningAlert.value = false
 	const result = await getBookDetails(isbnCode.value)
 	if (result) {
 		book.value = { ...result }
