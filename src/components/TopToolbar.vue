@@ -3,7 +3,16 @@
 		app
 		fixed
 	>
-		<v-toolbar-title>Books Library</v-toolbar-title>
+		<v-toolbar-title>
+			<div class="d-flex ga-3 align-center">
+				<v-img
+					src="../../assets/icon.png"
+					max-width="34px"
+          style="border-radius: 100%;"
+				></v-img>
+				Book Library
+			</div>
+		</v-toolbar-title>
 		<v-btn icon>
 			<v-icon>mdi-cog</v-icon>
 			<SettingsMenu />
