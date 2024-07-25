@@ -8,11 +8,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddBook: typeof import('./components/AddBook.vue')['default']
-    AddWorkout: typeof import('./components/AddWorkout.vue')['default']
     BaseSeparator: typeof import('./components/BaseSeparator.vue')['default']
     BooksList: typeof import('./components/BooksList.vue')['default']
     ConfirmationPopup: typeof import('./components/ConfirmationPopup.vue')['default']
-    copy: typeof import('./components/DeleteBooks copy.vue')['default']
     DeleteBooks: typeof import('./components/DeleteBooks.vue')['default']
     ManageLibraries: typeof import('./components/ManageLibraries.vue')['default']
     OverviewData: typeof import('./components/OverviewData.vue')['default']
