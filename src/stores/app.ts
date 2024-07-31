@@ -70,7 +70,7 @@ export const useAppStore = defineStore('app', {
 			this.writeToDB('books', book)
 		},
 		addLibrary(library: string) {
-			this.writeToDB('libraries', { id: this.libraries.length, library })
+			set(ref(db, `libraries/${this.libraries.length}`), library)
 		},
 		setCurrentOrderKey(currentOrderKey: string) {
 			this.currentOrderKey = currentOrderKey
@@ -101,9 +101,7 @@ export const useAppStore = defineStore('app', {
 		},
 		fetchLibraries() {
 			onValue(ref(db, 'libraries'), snapshot => {
-				this.$state.libraries = Object.values(snapshot.val()).map(
-					(item: any) => item.library
-				)
+				this.$state.libraries = Object.values(snapshot.val() ?? [])
 			})
 		},
 		fetchSettings() {
