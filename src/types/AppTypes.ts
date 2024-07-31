@@ -13,10 +13,11 @@ export type StoreState = {
 	currentOrderKey: string
 	currentLibrary: string
 	defaultLibrary: string
+	dataLoaded: boolean
 }
 
 export type OverviewData = {
-  Books: number
-  Read: number
-  Unread: number
+	Books: number
+	Read: number
+	Unread: number
 }

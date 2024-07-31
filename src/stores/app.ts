@@ -1,39 +1,27 @@
 import { Book, OverviewData, StoreState } from '@/types/AppTypes'
 import { defineStore } from 'pinia'
+import {
+	getDatabase,
+	ref,
+	set,
+	remove,
+	update,
+	onValue
+} from 'firebase/database'
 
+const db = getDatabase()
 export const useAppStore = defineStore('app', {
 	state: (): StoreState => ({
-		books: [
-			{
-				id: 1,
-				title: 'Terra americana',
-				author: 'Jeanine Cummins',
-				read: false,
-				library: 'orange'
-			},
-			{
-				id: 2,
-				title: 'The Nightingale',
-				author: 'Kristin Hannah',
-				read: true,
-				library: 'blue'
-			},
-			{
-				id: 3,
-				title: 'Americanah',
-				author: 'Chimamanda Ngozi Adichie',
-				read: true,
-				library: 'blue'
-			}
-		],
+		books: [],
 		orderByList: ['Title', 'Author'],
-		libraries: ['All', 'orange', 'blue'],
+		libraries: [],
 		currentOrderKey: 'Title',
 		currentLibrary: 'All',
-		defaultLibrary: 'orange'
+		defaultLibrary: '',
+		dataLoaded: false
 	}),
 	getters: {
-		getBooksLoaded: state => state.books?.length,
+		getBooksLoaded: state => state.dataLoaded,
 		getBooks: state => {
 			let booksTmp = state.books
 			if (state.currentLibrary !== 'All') {
@@ -50,8 +38,8 @@ export const useAppStore = defineStore('app', {
 		},
 		getNextBookId: state => state.books.length,
 		getOrderByList: state => state.orderByList,
-		getAllLibraries: state => state.libraries,
-		getLibraries: state => state.libraries.filter(library => library !== 'All'),
+		getAllLibraries: state => ['All', ...state.libraries],
+		getLibraries: state => state.libraries,
 		getCurrentOrderKey: state => state.currentOrderKey,
 		getCurrentLibrary: state => state.currentLibrary,
 		getDefaultLibrary: state => state.defaultLibrary,
@@ -78,14 +66,11 @@ export const useAppStore = defineStore('app', {
 		}
 	},
 	actions: {
-		setBooks(books: Book[]) {
-			this.books = books
-		},
 		addBook(book: Book) {
-			this.books.push(book)
+			this.writeToDB('books', book)
 		},
 		addLibrary(library: string) {
-			this.libraries.push(library)
+			this.writeToDB('libraries', { id: this.libraries.length, library })
 		},
 		setCurrentOrderKey(currentOrderKey: string) {
 			this.currentOrderKey = currentOrderKey
@@ -94,10 +79,37 @@ export const useAppStore = defineStore('app', {
 			this.currentLibrary = currentLibrary
 		},
 		setDefaultLibrary(defaultLibrary: string) {
-			this.defaultLibrary = defaultLibrary
+			set(ref(db, 'settings/defaultLibrary'), defaultLibrary)
 		},
 		deleteBook(id: number) {
-			this.books = this.books.filter(book => book.id !== id)
+			this.removeItemInDB(`books/${id}`)
+		},
+		writeToDB(key: string, payload: any) {
+			set(ref(db, `${key}/` + payload.id), payload)
+		},
+		updateItemInDB(updates: Record<string, never>) {
+			update(ref(db), updates)
+		},
+		removeItemInDB(path: string) {
+			remove(ref(db, path))
+		},
+		fetchBooks() {
+			onValue(ref(db, 'books'), snapshot => {
+				this.$state.books = Object.values(snapshot.val() ?? [])
+				this.$state.dataLoaded = true
+			})
+		},
+		fetchLibraries() {
+			onValue(ref(db, 'libraries'), snapshot => {
+				this.$state.libraries = Object.values(snapshot.val()).map(
+					(item: any) => item.library
+				)
+			})
+		},
+		fetchSettings() {
+			onValue(ref(db, 'settings'), snapshot => {
+				this.$state.defaultLibrary = snapshot.val().defaultLibrary
+			})
 		}
 	}
 })

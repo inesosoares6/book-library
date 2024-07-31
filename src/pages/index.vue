@@ -65,6 +65,12 @@ const orderBy = computed({
 		store.setCurrentOrderKey(value)
 	}
 })
+
+onBeforeMount(() => {
+	store.fetchBooks()
+	store.fetchLibraries()
+	store.fetchSettings()
+})
 </script>
 
 <style scoped lang="css">
