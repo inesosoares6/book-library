@@ -129,6 +129,16 @@
 					Submit
 				</v-btn>
 			</div>
+			<v-btn
+				v-if="props.book"
+				class="position-absolute bottom-0 mb-10"
+				style="left: 50%; transform: translate(-50%, 0%)"
+				color="red"
+				variant="outlined"
+				@click="deleteBook"
+			>
+				Delete
+			</v-btn>
 		</v-card>
 	</v-dialog>
 </template>
@@ -171,6 +181,11 @@ const closeModal = () => {
 	showWarningAlert.value = false
 	isbnCode.value = null
 	emit('completed')
+}
+
+const deleteBook = () => {
+	store.deleteBook(book.value.id)
+	closeModal()
 }
 
 const submitBook = () => {
