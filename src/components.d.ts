@@ -7,7 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AddBook: typeof import('./components/AddBook.vue')['default']
+    AddEditBook: typeof import('./components/AddEditBook.vue')['default']
     BaseSeparator: typeof import('./components/BaseSeparator.vue')['default']
     BooksList: typeof import('./components/BooksList.vue')['default']
     ConfirmationPopup: typeof import('./components/ConfirmationPopup.vue')['default']

@@ -17,6 +17,7 @@
 				<v-list-item
 					:title="book.title"
 					:subtitle="book.author"
+					@click="editBookDialog[book.id] = true"
 				>
 					<template v-slot:prepend>
 						<v-avatar :color="colorMapper(getAvatarLetter(book))">
@@ -48,6 +49,12 @@
 							/>
 						</v-btn>
 					</template>
+					<AddEditBook
+						v-if="editBookDialog[book.id]"
+						v-model="editBookDialog[book.id]"
+						:book="book"
+						@completed="editBookDialog[book.id] = false"
+					/>
 				</v-list-item>
 				<v-divider
 					inset
@@ -77,6 +84,7 @@ defineProps<{
 const store = useAppStore()
 
 const search = ref('')
+const editBookDialog: Ref<Record<string, boolean>> = ref({})
 
 const books = computed(() => store.getBooks)
 const booksFiltered = computed(() => {

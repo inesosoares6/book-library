@@ -64,7 +64,10 @@
 					variant="outlined"
 					min-height="120"
 				/>
-				<div class="d-flex flex-column ga-8">
+				<div
+					v-if="!props.book"
+					class="d-flex flex-column ga-8"
+				>
 					<div class="w-100 d-flex ga-8 mb-3 align-center">
 						<v-text-field
 							v-model="isbnCode"
@@ -121,7 +124,7 @@
 					class="mt-5"
 					color="primary"
 					:disabled="Object.values(book).some(value => value === '')"
-					@click="addBook"
+					@click="submitBook"
 				>
 					Submit
 				</v-btn>
@@ -134,8 +137,14 @@
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning'
 import { useAppStore } from '@/stores/app'
 import { getBookDetails } from '@/services/app-services'
+import { Book } from '@/types/AppTypes'
 
 const store = useAppStore()
+
+const props = defineProps<{
+	book?: Book
+}>()
+const emit = defineEmits(['completed'])
 
 const libraries = computed(() => store.getLibraries)
 const defaultLibrary = computed(() => store.getDefaultLibrary)
@@ -145,6 +154,7 @@ const showWarningAlert = ref(false)
 const state = ref(0)
 
 const bookInitialState = {
+	id: -1,
 	title: '',
 	author: '',
 	read: false,
@@ -160,10 +170,15 @@ const closeModal = () => {
 	book.value = { ...bookInitialState }
 	showWarningAlert.value = false
 	isbnCode.value = null
+	emit('completed')
 }
 
-const addBook = () => {
-	store.addBook({ ...book.value, id: store.getNextBookId })
+const submitBook = () => {
+	if (props.book) {
+		store.addBook(book.value)
+	} else {
+		store.addBook({ ...book.value, id: store.getNextBookId })
+	}
 	closeModal()
 }
 
@@ -219,6 +234,13 @@ watch(state, async () => {
 
 watch(defaultLibrary, () => {
 	book.value.library = defaultLibrary.value
+})
+
+onBeforeMount(() => {
+	if (props.book) {
+		book.value = { ...book.value, ...props.book }
+		state.value = 2
+	}
 })
 </script>
 

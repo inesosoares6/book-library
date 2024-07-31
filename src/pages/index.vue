@@ -34,7 +34,7 @@
 				color="primary"
 			>
 				<v-icon>mdi-plus</v-icon>
-				<AddBook />
+				<AddEditBook />
 			</v-btn>
 		</div>
 	</v-container>

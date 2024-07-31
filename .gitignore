@@ -4,6 +4,7 @@ dist
 android
 icons
 public
+src/configs
 
 # local env files
 .env.local
