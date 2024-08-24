@@ -168,7 +168,7 @@ const bookInitialState = {
 	title: '',
 	author: '',
 	read: false,
-	library: defaultLibrary.value
+	library: ''
 }
 const book = ref({ ...bookInitialState })
 
@@ -178,6 +178,7 @@ const closeModal = () => {
 	state.value = 0
 	addBookDialog.value = false
 	book.value = { ...bookInitialState }
+	book.value.library = defaultLibrary.value
 	showWarningAlert.value = false
 	isbnCode.value = null
 	emit('completed')
