@@ -88,13 +88,25 @@ const editBookDialog: Ref<Record<string, boolean>> = ref({})
 
 const books = computed(() => store.getBooks)
 const booksFiltered = computed(() => {
-	return books.value?.length
-		? books.value?.filter(
-				book =>
-					book.title.toLowerCase().includes(search.value.toLowerCase()) ||
-					book.author.toLowerCase().includes(search.value.toLowerCase())
-		  )
-		: []
+	if (!books.value?.length) return []
+	if (!search.value?.length) return books.value
+
+	let searchData = search.value
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase()
+		.replace(/ /g, ')(?=.*')
+	searchData = '(?=.*' + searchData + ').*'
+	const regexToSearch = new RegExp(searchData, 'gi')
+
+	return books.value?.filter(e => {
+		return (e.title + ' ' + e.author)
+			.toString()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.toLowerCase()
+			.match(regexToSearch)
+	})
 })
 
 const orderBy = computed(() => store.getCurrentOrderKey)

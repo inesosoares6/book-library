@@ -35,6 +35,7 @@ export const useAppStore = defineStore('app', {
 				case 'Author':
 					return booksTmp.sort((a, b) => a.author.localeCompare(b.author))
 			}
+			return booksTmp
 		},
 		getNextBookId: state => state.books.length,
 		getOrderByList: state => state.orderByList,
