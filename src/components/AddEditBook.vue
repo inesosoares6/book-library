@@ -177,8 +177,7 @@ const isbnCode = ref()
 const closeModal = () => {
 	state.value = 0
 	addBookDialog.value = false
-	book.value = { ...bookInitialState }
-	book.value.library = defaultLibrary.value
+	book.value = { ...bookInitialState, library: defaultLibrary.value }
 	showWarningAlert.value = false
 	isbnCode.value = null
 	emit('completed')
@@ -225,7 +224,7 @@ const stopScan = async () => {
 	await BarcodeScanner.stopScan()
 	state.value = 2
 	showWarningAlert.value = true
-	book.value = { ...bookInitialState }
+	book.value = { ...bookInitialState, library: defaultLibrary.value }
 }
 
 const fetchBookDetails = async () => {
@@ -235,7 +234,7 @@ const fetchBookDetails = async () => {
 		book.value = { ...book.value, ...result }
 	} else {
 		showWarningAlert.value = true
-		book.value = { ...bookInitialState }
+		book.value = { ...bookInitialState, library: defaultLibrary.value }
 	}
 }
 
