@@ -8,12 +8,14 @@
 		single-line
 	/>
 
-	<v-list lines="two">
-		<div v-if="booksFiltered.length">
-			<div
-				v-for="(book, index) in booksFiltered"
-				:key="index"
-			>
+	<div ref="listContainer">
+		<v-virtual-scroll
+			v-if="booksFiltered.length"
+			:height="scrollerHeight"
+			:items="booksFiltered"
+			item-height="75"
+		>
+			<template v-slot:default="{ item: book, index }">
 				<v-list-item
 					:title="book.title"
 					:subtitle="book.author"
@@ -61,15 +63,15 @@
 					v-if="index < booksFiltered.length - 1"
 					class="my-2"
 				/>
-			</div>
-		</div>
+			</template>
+		</v-virtual-scroll>
 		<div
 			v-else
 			class="text-center pa-4"
 		>
 			No Books found with those filters.
 		</div>
-	</v-list>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -84,7 +86,9 @@ defineProps<{
 const store = useAppStore()
 
 const search = ref('')
+const listContainer = ref<HTMLElement>()
 const editBookDialog: Ref<Record<string, boolean>> = ref({})
+const scrollerHeight = ref(0)
 
 const books = computed(() => store.getBooks)
 const booksFiltered = computed(() => {
@@ -126,4 +130,10 @@ const getConfirmationText = (book: Book) => {
 const handleDelete = (id: number) => {
 	store.deleteBook(id)
 }
+
+onMounted(() => {
+	scrollerHeight.value =
+		window.innerHeight -
+		(listContainer.value as HTMLElement)?.getBoundingClientRect().top
+})
 </script>
