@@ -1,4 +1,5 @@
 # book-library
+This application aims to serve as a database to store books, including different libraries, and can also track the ones already read or not. To easily add books, reading the book ISBN code and the app fetches the data automatically is possible.
 
 <p align="center">
 <img height="600" alt="image" src="https://github.com/user-attachments/assets/f425d8fe-a568-455a-be6a-c118eb3835c9">
