@@ -36,12 +36,15 @@
 <script setup lang="ts">
 import { useAppStore } from '@/stores/app'
 import { colorMapper } from '@/helpers/mappers'
+import { OverviewData } from '@/types/AppTypes'
 
 const store = useAppStore()
 
 const overviewDataDialog = ref(false)
 
-const overviewData = computed(() => store.getOverviewData)
+const overviewData: ComputedRef<Record<string, OverviewData>> = computed(
+	() => store.getOverviewData
+)
 
 const isLastItem = (key: string) => {
 	const keys = Object.keys(overviewData.value)

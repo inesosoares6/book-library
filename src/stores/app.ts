@@ -26,14 +26,18 @@ export const useAppStore = defineStore('app', {
 			let booksTmp = state.books
 			if (state.currentLibrary !== 'All') {
 				booksTmp = booksTmp.filter(
-					book => book.library === state.currentLibrary
+					(book: Book) => book.library === state.currentLibrary
 				)
 			}
 			switch (state.currentOrderKey) {
 				case 'Title':
-					return booksTmp.sort((a, b) => a.title.localeCompare(b.title))
+					return booksTmp.sort((a: Book, b: Book) =>
+						a.title.localeCompare(b.title)
+					)
 				case 'Author':
-					return booksTmp.sort((a, b) => a.author.localeCompare(b.author))
+					return booksTmp.sort((a: Book, b: Book) =>
+						a.author.localeCompare(b.author)
+					)
 			}
 			return booksTmp
 		},
@@ -47,18 +51,19 @@ export const useAppStore = defineStore('app', {
 			let overviewData: Record<string, OverviewData> = {
 				All: {
 					Books: state.books.length,
-					Read: state.books.filter(book => book.read).length,
-					Unread: state.books.filter(book => !book.read).length
+					Read: state.books.filter((book: Book) => book.read).length,
+					Unread: state.books.filter((book: Book) => !book.read).length
 				}
 			}
-			this.getLibraries.forEach(library => {
+			this.getLibraries.forEach((library: any) => {
 				overviewData[library] = {
-					Books: state.books.filter(book => book.library === library).length,
+					Books: state.books.filter((book: Book) => book.library === library)
+						.length,
 					Read: state.books.filter(
-						book => book.library === library && book.read
+						(book: Book) => book.library === library && book.read
 					).length,
 					Unread: state.books.filter(
-						book => book.library === library && !book.read
+						(book: Book) => book.library === library && !book.read
 					).length
 				}
 			})

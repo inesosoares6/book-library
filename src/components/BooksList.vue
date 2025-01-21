@@ -91,7 +91,7 @@ const editBookDialog: Ref<Record<string, boolean>> = ref({})
 const scrollerHeight = ref(0)
 
 const books = computed(() => store.getBooks)
-const booksFiltered = computed(() => {
+const booksFiltered: ComputedRef<Book[]> = computed(() => {
 	if (!books.value?.length) return []
 	if (!search.value?.length) return books.value
 
@@ -103,7 +103,7 @@ const booksFiltered = computed(() => {
 	searchData = '(?=.*' + searchData + ').*'
 	const regexToSearch = new RegExp(searchData, 'gi')
 
-	return books.value?.filter(e => {
+	return books.value?.filter((e: Book) => {
 		return (e.title + ' ' + e.author)
 			.toString()
 			.normalize('NFD')
@@ -127,7 +127,7 @@ const getConfirmationText = (book: Book) => {
 							?`
 }
 
-const handleDelete = (id: number) => {
+const handleDelete = (id: string) => {
 	store.deleteBook(id)
 }
 
