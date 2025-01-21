@@ -148,6 +148,7 @@ import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning'
 import { useAppStore } from '@/stores/app'
 import { getBookDetails } from '@/services/app-services'
 import { Book } from '@/types/AppTypes'
+import { v4 as uuidv4 } from 'uuid'
 
 const store = useAppStore()
 
@@ -164,7 +165,7 @@ const showWarningAlert = ref(false)
 const state = ref(0)
 
 const bookInitialState = {
-	id: -1,
+	id: 'new',
 	title: '',
 	author: '',
 	read: false,
@@ -192,7 +193,7 @@ const submitBook = () => {
 	if (props.book) {
 		store.addBook(book.value)
 	} else {
-		store.addBook({ ...book.value, id: store.getNextBookId })
+		store.addBook({ ...book.value, id: uuidv4() })
 	}
 	closeModal()
 }

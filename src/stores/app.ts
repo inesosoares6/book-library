@@ -37,7 +37,6 @@ export const useAppStore = defineStore('app', {
 			}
 			return booksTmp
 		},
-		getNextBookId: state => state.books.length,
 		getOrderByList: state => state.orderByList,
 		getAllLibraries: state => ['All', ...state.libraries],
 		getLibraries: state => state.libraries,
@@ -82,10 +81,11 @@ export const useAppStore = defineStore('app', {
 		setDefaultLibrary(defaultLibrary: string) {
 			set(ref(db, 'settings/defaultLibrary'), defaultLibrary)
 		},
-		deleteBook(id: number) {
+		deleteBook(id: string) {
 			this.removeItemInDB(`books/${id}`)
 		},
 		writeToDB(key: string, payload: any) {
+			console.log(payload)
 			set(ref(db, `${key}/` + payload.id), payload)
 		},
 		updateItemInDB(updates: Record<string, never>) {
