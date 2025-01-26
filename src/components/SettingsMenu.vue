@@ -45,6 +45,17 @@
 						</template>
 					</v-list-item>
 					<v-divider class="my-2" />
+					<v-list-item title="Close modal after adding book">
+						<template v-slot:append>
+							<v-switch
+								v-model="closeModalAfterAddingBook"
+								color="primary"
+								hide-details
+								inset
+							/>
+						</template>
+					</v-list-item>
+					<v-divider class="my-2" />
 					<v-list-item
 						title="Delete books"
 						class="text-red-darken-3"
@@ -74,6 +85,15 @@ const defaultLibrary = computed({
 	},
 	set(value) {
 		store.setDefaultLibrary(value)
+	}
+})
+
+const closeModalAfterAddingBook = computed({
+	get() {
+		return store.getCloseModalAfterAddingBook
+	},
+	set(value) {
+		store.setCloseModalAfterAddingBook(value)
 	}
 })
 </script>

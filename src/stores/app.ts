@@ -17,8 +17,11 @@ export const useAppStore = defineStore('app', {
 		libraries: [],
 		currentOrderKey: 'Title',
 		currentLibrary: 'All',
-		defaultLibrary: '',
-		dataLoaded: false
+		dataLoaded: false,
+		settings: {
+			defaultLibrary: '',
+			closeModalAfterAddingBook: false
+		}
 	}),
 	getters: {
 		getBooksLoaded: state => state.dataLoaded,
@@ -46,7 +49,9 @@ export const useAppStore = defineStore('app', {
 		getLibraries: state => state.libraries,
 		getCurrentOrderKey: state => state.currentOrderKey,
 		getCurrentLibrary: state => state.currentLibrary,
-		getDefaultLibrary: state => state.defaultLibrary,
+		getDefaultLibrary: state => state.settings.defaultLibrary,
+		getCloseModalAfterAddingBook: state =>
+			state.settings.closeModalAfterAddingBook,
 		getOverviewData(state) {
 			let overviewData: Record<string, OverviewData> = {
 				All: {
@@ -86,11 +91,13 @@ export const useAppStore = defineStore('app', {
 		setDefaultLibrary(defaultLibrary: string) {
 			set(ref(db, 'settings/defaultLibrary'), defaultLibrary)
 		},
+		setCloseModalAfterAddingBook(value: boolean) {
+			set(ref(db, 'settings/closeModalAfterAddingBook'), value)
+		},
 		deleteBook(id: string) {
 			this.removeItemInDB(`books/${id}`)
 		},
 		writeToDB(key: string, payload: any) {
-			console.log(payload)
 			set(ref(db, `${key}/` + payload.id), payload)
 		},
 		updateItemInDB(updates: Record<string, never>) {
@@ -101,18 +108,18 @@ export const useAppStore = defineStore('app', {
 		},
 		fetchBooks() {
 			onValue(ref(db, 'books'), snapshot => {
-				this.$state.books = Object.values(snapshot.val() ?? [])
-				this.$state.dataLoaded = true
+				this.books = Object.values(snapshot.val() ?? [])
+				this.dataLoaded = true
 			})
 		},
 		fetchLibraries() {
 			onValue(ref(db, 'libraries'), snapshot => {
-				this.$state.libraries = Object.values(snapshot.val() ?? [])
+				this.libraries = Object.values(snapshot.val() ?? [])
 			})
 		},
 		fetchSettings() {
 			onValue(ref(db, 'settings'), snapshot => {
-				this.$state.defaultLibrary = snapshot.val().defaultLibrary
+				this.settings = snapshot.val()
 			})
 		}
 	}

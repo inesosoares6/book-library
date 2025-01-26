@@ -12,8 +12,11 @@ export type StoreState = {
 	libraries: string[]
 	currentOrderKey: string
 	currentLibrary: string
-	defaultLibrary: string
 	dataLoaded: boolean
+	settings: {
+		defaultLibrary: string
+		closeModalAfterAddingBook: boolean
+	}
 }
 
 export type OverviewData = {

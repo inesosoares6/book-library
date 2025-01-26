@@ -75,6 +75,7 @@
 							variant="outlined"
 							required
 							hide-details
+							:disabled="isLoading"
 						/>
 						<v-btn
 							:disabled="isbnCode?.length !== 13"
@@ -96,15 +97,24 @@
 					:autofocus="!book.title"
 					required
 					hide-details
+					:disabled="isLoading"
 				/>
-				<v-text-field
-					v-model="book.author"
-					label="Author"
-					variant="outlined"
-					:autofocus="!book.author && !!book.title"
-					required
-					hide-details
-				/>
+				<div class="d-flex ga-3">
+					<v-text-field
+						v-model="book.author"
+						label="Author"
+						variant="outlined"
+						:autofocus="!book.author && !!book.title"
+						required
+						hide-details
+						:disabled="isLoading"
+					/>
+					<v-checkbox
+						v-model="keepAuthorName"
+						hide-details
+						:disabled="isLoading"
+					/>
+				</div>
 				<div class="d-flex ga-3">
 					<v-select
 						v-model="book.library"
@@ -113,11 +123,13 @@
 						variant="outlined"
 						hide-details
 						required
+						:disabled="isLoading"
 					/>
 					<v-checkbox
 						v-model="book.read"
 						label="Already read"
 						hide-details
+						:disabled="isLoading"
 					/>
 				</div>
 				<v-btn
@@ -125,6 +137,7 @@
 					color="primary"
 					:disabled="Object.values(book).some(value => value === '')"
 					@click="submitBook"
+					:loading="isLoading"
 				>
 					Submit
 				</v-btn>
@@ -136,6 +149,7 @@
 				color="red"
 				variant="outlined"
 				@click="deleteBook"
+				:disabled="isLoading"
 			>
 				Delete
 			</v-btn>
@@ -159,10 +173,15 @@ const emit = defineEmits(['completed'])
 
 const libraries = computed(() => store.getLibraries)
 const defaultLibrary = computed(() => store.getDefaultLibrary)
+const closeModalAfterAddingBook = computed(
+	() => store.getCloseModalAfterAddingBook
+)
 const addBookDialog = ref(false)
 const showStopScanButton = ref(false)
 const showWarningAlert = ref(false)
 const state = ref(0)
+const keepAuthorName = ref(false)
+const isLoading = ref(false)
 
 const bookInitialState = {
 	id: 'new',
@@ -176,11 +195,19 @@ const book = ref({ ...bookInitialState })
 const isbnCode = ref()
 
 const closeModal = () => {
-	state.value = 0
-	addBookDialog.value = false
-	book.value = { ...bookInitialState, library: defaultLibrary.value }
+	book.value = {
+		...bookInitialState,
+		library: defaultLibrary.value,
+		author: keepAuthorName.value ? book.value.author : ''
+	}
 	showWarningAlert.value = false
 	isbnCode.value = null
+
+	if (closeModalAfterAddingBook.value || !isLoading.value) {
+		state.value = 0
+		addBookDialog.value = false
+	}
+	isLoading.value = false
 	emit('completed')
 }
 
@@ -189,11 +216,12 @@ const deleteBook = () => {
 	closeModal()
 }
 
-const submitBook = () => {
+const submitBook = async () => {
+	isLoading.value = true
 	if (props.book) {
-		store.addBook(book.value)
+		await store.addBook(book.value)
 	} else {
-		store.addBook({ ...book.value, id: uuidv4() })
+		await store.addBook({ ...book.value, id: uuidv4() })
 	}
 	closeModal()
 }
