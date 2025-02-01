@@ -19,18 +19,18 @@
 					<v-list-subheader>
 						{{ 'General'.toLocaleUpperCase() }}
 					</v-list-subheader>
-					<v-list-item title="Overview data">
-						<template v-slot:append>
-							<v-icon>mdi-chevron-right</v-icon>
-						</template>
-            <OverviewData />
+					<v-list-item
+						title="Overview data"
+						append-icon="mdi-chevron-right"
+					>
+						<OverviewData />
 					</v-list-item>
 					<v-divider class="my-2" />
-					<v-list-item title="Manage libraries">
-						<template v-slot:append>
-							<v-icon>mdi-chevron-right</v-icon>
-						</template>
-            <ManageLibraries />
+					<v-list-item
+						title="Manage libraries"
+						append-icon="mdi-chevron-right"
+					>
+						<ManageLibraries />
 					</v-list-item>
 					<v-divider class="my-2" />
 					<v-list-item title="Default library">
@@ -59,11 +59,9 @@
 					<v-list-item
 						title="Delete books"
 						class="text-red-darken-3"
+						append-icon="mdi-chevron-right"
 					>
-						<template v-slot:append>
-							<v-icon>mdi-chevron-right</v-icon>
-						</template>
-            <DeleteBooks />
+						<DeleteBooks />
 					</v-list-item>
 				</v-list>
 			</v-card-text>
