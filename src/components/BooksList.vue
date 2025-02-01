@@ -7,6 +7,7 @@
 		clearable
 		hide-details
 		single-line
+		:class="{ 'mb-4': purpose === 'delete' }"
 	/>
 
 	<div ref="listContainer">
