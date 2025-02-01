@@ -22,15 +22,15 @@
 					<v-list-item title="Overview data">
 						<template v-slot:append>
 							<v-icon>mdi-chevron-right</v-icon>
-							<OverviewData />
 						</template>
+            <OverviewData />
 					</v-list-item>
 					<v-divider class="my-2" />
 					<v-list-item title="Manage libraries">
 						<template v-slot:append>
 							<v-icon>mdi-chevron-right</v-icon>
-							<ManageLibraries />
 						</template>
+            <ManageLibraries />
 					</v-list-item>
 					<v-divider class="my-2" />
 					<v-list-item title="Default library">
@@ -62,8 +62,8 @@
 					>
 						<template v-slot:append>
 							<v-icon>mdi-chevron-right</v-icon>
-							<DeleteBooks />
 						</template>
+            <DeleteBooks />
 					</v-list-item>
 				</v-list>
 			</v-card-text>
