@@ -138,7 +138,9 @@
 				<v-btn
 					class="mt-5"
 					color="primary"
-					:disabled="Object.values(book).some(value => value === '')"
+					:disabled="
+						Object.values(book).some(value => ['', null, undefined].includes(value as string))
+					"
 					@click="submitBook"
 					:loading="isLoading"
 				>
