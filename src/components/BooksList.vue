@@ -4,6 +4,7 @@
 		label="Pesquisa"
 		prepend-inner-icon="mdi-magnify"
 		variant="outlined"
+		clearable
 		hide-details
 		single-line
 	/>

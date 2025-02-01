@@ -74,6 +74,7 @@
 							label="ISBN"
 							variant="outlined"
 							required
+							clearable
 							hide-details
 							:disabled="isLoading"
 						/>
@@ -96,6 +97,7 @@
 					variant="outlined"
 					:autofocus="!book.title"
 					required
+					clearable
 					hide-details
 					:disabled="isLoading"
 				/>
@@ -106,6 +108,7 @@
 						variant="outlined"
 						:autofocus="!book.author && !!book.title"
 						required
+						clearable
 						hide-details
 						:disabled="isLoading"
 					/>
