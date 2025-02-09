@@ -1,3 +1,5 @@
+import { cleanString } from './stringHelpers'
+
 export const colorMapper = (input: string | number) => {
 	const obj = {
 		0: 'green-lighten-5',
@@ -38,6 +40,6 @@ export const colorMapper = (input: string | number) => {
 		Z: 'orange-lighten-3'
 	}
 
-	const key = String(input).toUpperCase()
+	const key = cleanString(String(input)).toUpperCase()
 	return obj[key as keyof typeof obj]
 }

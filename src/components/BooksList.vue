@@ -49,7 +49,7 @@
 							<ConfirmationPopup
 								:text="getConfirmationText(book)"
 								button-class="red-darken-3"
-								@confirm="handleDelete(book.id)"
+								@confirm="store.deleteBook(book.id)"
 							/>
 						</v-btn>
 					</template>
@@ -80,6 +80,7 @@
 import { useAppStore } from '@/stores/app'
 import { colorMapper } from '@/helpers/mappers'
 import { Book } from '@/types/AppTypes'
+import { cleanString } from '@/helpers/stringHelpers'
 
 defineProps<{
 	purpose: 'display' | 'delete'
@@ -97,41 +98,26 @@ const booksFiltered: ComputedRef<Book[]> = computed(() => {
 	if (!books.value?.length) return []
 	if (!search.value?.length) return books.value
 
-	let searchData = search.value
-		.normalize('NFD')
-		.replace(/[\u0300-\u036f]/g, '')
-		.toLowerCase()
-		.replace(/ /g, ')(?=.*')
+	let searchData = cleanString(search.value).replace(/ /g, ')(?=.*')
 	searchData = '(?=.*' + searchData + ').*'
 	const regexToSearch = new RegExp(searchData, 'gi')
 
-	return books.value?.filter((e: Book) => {
-		return (e.title + ' ' + e.author)
-			.toString()
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f]/g, '')
-			.toLowerCase()
-			.match(regexToSearch)
-	})
+	return books.value?.filter((e: Book) =>
+		cleanString(e.title + ' ' + e.author).match(regexToSearch)
+	)
 })
 
 const orderBy = computed(() => store.getCurrentOrderKey)
 
-const getAvatarLetter = (book: Book) => {
-	return orderBy.value === 'Title' ? book.title[0] : book.author[0]
-}
+const getAvatarLetter = (book: Book) =>
+	orderBy.value === 'Title' ? book.title[0] : book.author[0]
 
-const getConfirmationText = (book: Book) => {
-	return `Are you sure you want to delete
+const getConfirmationText = (book: Book) =>
+	`Are you sure you want to delete
 							<span class='font-weight-bold text-secondary'>
 								${book.title} (${book.author})
 							</span>
 							?`
-}
-
-const handleDelete = (id: string) => {
-	store.deleteBook(id)
-}
 
 onMounted(() => {
 	scrollerHeight.value =
